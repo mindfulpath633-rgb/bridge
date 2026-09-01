@@ -1,0 +1,597 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="BRIDGE is a public-information directory for discovering international B2B trade organizations.">
+  <title>BRIDGE — Global B2B Trade Directory</title>
+  <style>
+    :root {
+      --ink: #0c1420;
+      --navy: #0e1b2e;
+      --muted: #657080;
+      --green: #0e6b52;
+      --green-dark: #0a4f3d;
+      --mint: #e7f1ec;
+      --line: #e4e1d6;
+      --paper: #fafaf7;
+      --white: #ffffff;
+      --gold: #b8863b;
+      --shadow: 0 18px 50px rgba(14, 27, 46, .08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { cursor: pointer; }
+    a { color: inherit; }
+    .shell { width: min(1160px, calc(100% - 40px)); margin-inline: auto; }
+    .eyebrow {
+      color: var(--green);
+      font: 700 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { letter-spacing: -.035em; }
+    h1, h2 { font-family: Georgia, "Times New Roman", serif; font-weight: 500; }
+    h1 { font-size: clamp(43px, 6vw, 74px); line-height: .98; }
+    h2 { font-size: clamp(32px, 4vw, 52px); line-height: 1.05; }
+    h3 { font-size: 20px; line-height: 1.15; }
+    .italic { color: var(--green); font-style: italic; }
+    .muted { color: var(--muted); }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: rgba(250, 250, 247, .92);
+      backdrop-filter: blur(16px);
+    }
+    .nav {
+      min-height: 75px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 0;
+      padding: 0;
+      color: var(--ink);
+      background: transparent;
+    }
+    .brand svg { width: 27px; height: 27px; }
+    .brand-name { font: 500 25px/1 Georgia, "Times New Roman", serif; letter-spacing: -.04em; }
+    .nav-links { display: flex; align-items: center; gap: 28px; }
+    .nav-links button, .nav-links a {
+      border: 0;
+      padding: 7px 0;
+      color: var(--muted);
+      background: transparent;
+      font-size: 13px;
+      font-weight: 650;
+      text-decoration: none;
+    }
+    .nav-links button:hover, .nav-links a:hover, .nav-links .active { color: var(--ink); }
+    .nav-links .active { box-shadow: inset 0 -2px var(--green); }
+    .nav-actions { display: flex; align-items: center; gap: 10px; }
+    .menu-toggle { display: none; border: 0; background: transparent; font-size: 24px; }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 10px 17px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 750;
+      text-decoration: none;
+      transition: .2s ease;
+    }
+    .btn-primary { color: var(--white); background: var(--green); }
+    .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+    .btn-dark { color: var(--white); background: var(--navy); }
+    .btn-dark:hover { background: var(--green); }
+    .btn-outline { color: var(--navy); border-color: var(--navy); background: transparent; }
+    .btn-outline:hover { color: var(--white); background: var(--navy); }
+    .btn-light { color: var(--green-dark); border-color: #c9e4d8; background: var(--mint); }
+    .btn-light:hover { background: #d3e8de; }
+    .btn-small { min-height: 36px; padding: 7px 12px; font-size: 12px; }
+
+    main { overflow: hidden; }
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(350px, .98fr);
+      align-items: center;
+      gap: 70px;
+      padding: 90px 0 76px;
+    }
+    .hero-copy { display: grid; gap: 23px; }
+    .hero-copy h1 { max-width: 660px; }
+    .hero-copy p { max-width: 590px; color: var(--muted); font-size: 17px; line-height: 1.7; }
+    .hero-buttons { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 7px; }
+    .honesty-note {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      max-width: 560px;
+      padding-top: 17px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font: 11px/1.6 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .honesty-note strong { color: var(--ink); font-weight: 700; }
+    .hero-visual {
+      position: relative;
+      min-height: 440px;
+      border: 1px solid #d6e4dc;
+      border-radius: 28px;
+      overflow: hidden;
+      background: linear-gradient(145deg, #f0f7f3, #e0eee6);
+    }
+    .hero-visual:before, .hero-visual:after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(14, 107, 82, .18);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .hero-visual:before { width: 410px; height: 410px; left: 50%; top: 48%; }
+    .hero-visual:after { width: 650px; height: 650px; left: 50%; top: 48%; }
+    .map-grid {
+      position: absolute;
+      inset: 0;
+      opacity: .35;
+      background-image: linear-gradient(rgba(14,107,82,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(14,107,82,.1) 1px, transparent 1px);
+      background-size: 36px 36px;
+      mask-image: radial-gradient(circle at center, black, transparent 73%);
+    }
+    .route { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .route path { fill: none; stroke: var(--green); stroke-width: 1.5; stroke-dasharray: 5 8; opacity: .65; }
+    .hub {
+      position: absolute;
+      left: 50%;
+      top: 48%;
+      width: 98px;
+      height: 98px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #8bbbaa;
+      border-radius: 50%;
+      color: var(--white);
+      background: var(--green);
+      box-shadow: 0 0 0 13px rgba(14, 107, 82, .1), 0 14px 35px rgba(14, 107, 82, .2);
+      transform: translate(-50%, -50%);
+      font: 700 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+      letter-spacing: .12em;
+    }
+    .pin {
+      position: absolute;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 4px solid #e0eee6;
+      border-radius: 50%;
+      color: var(--white);
+      background: var(--navy);
+      box-shadow: 0 5px 14px rgba(14,27,46,.16);
+      font-size: 11px;
+    }
+    .pin-a { left: 17%; top: 27%; } .pin-b { right: 15%; top: 26%; }
+    .pin-c { left: 20%; bottom: 20%; } .pin-d { right: 19%; bottom: 18%; }
+    .visual-caption {
+      position: absolute;
+      right: 22px;
+      bottom: 20px;
+      left: 22px;
+      display: flex;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 15px 16px;
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 10px;
+      background: rgba(255,255,255,.72);
+      backdrop-filter: blur(7px);
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .visual-caption strong { display: block; color: var(--ink); font-size: 13px; }
+
+    .section { padding: 76px 0; }
+    .section-heading { display: flex; align-items: end; justify-content: space-between; gap: 30px; margin-bottom: 30px; }
+    .section-heading > div { display: grid; gap: 12px; }
+    .section-heading p { max-width: 550px; color: var(--muted); font-size: 14px; line-height: 1.65; }
+    .proof-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+    .proof-item { min-height: 170px; padding: 27px; background: var(--white); }
+    .proof-item .icon {
+      width: 34px; height: 34px; display: grid; place-items: center; margin-bottom: 22px;
+      border-radius: 9px; color: var(--green); background: var(--mint); font-weight: 800;
+    }
+    .proof-item h3 { margin-bottom: 9px; font-size: 17px; letter-spacing: -.02em; }
+    .proof-item p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+    .directory-wrap { background: #f2f1ea; border-block: 1px solid var(--line); }
+    .directory-layout { display: grid; grid-template-columns: 235px minmax(0, 1fr); gap: 26px; align-items: start; }
+    .filters {
+      position: sticky; top: 100px; display: grid; gap: 13px;
+      padding: 19px; border: 1px solid var(--line); border-radius: 11px; background: var(--white);
+    }
+    .filters h3 { font: 700 11px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .field { display: grid; gap: 6px; }
+    .field label { color: #84909c; font: 700 10px ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .field input, .field select, .field textarea {
+      width: 100%; border: 1px solid var(--line); border-radius: 6px; outline: 0; padding: 9px 10px; color: var(--ink); background: var(--paper); font-size: 12px;
+    }
+    .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(14,107,82,.1); }
+    .reset { border: 0; padding: 5px; color: var(--muted); background: transparent; font-size: 11px; text-align: left; }
+    .reset:hover { color: var(--ink); }
+    .directory-main { min-width: 0; }
+    .directory-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 15px; margin-bottom: 17px; }
+    .result-note { color: var(--muted); font: 11px ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+    .card {
+      display: flex; flex-direction: column; min-height: 265px; padding: 17px; border: 1px solid var(--line); border-radius: 11px; background: var(--white); box-shadow: 0 5px 18px rgba(14,27,46,.03); transition: .2s ease;
+    }
+    .card:hover { border-color: #b8d5c8; box-shadow: var(--shadow); transform: translateY(-2px); }
+    .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .monogram {
+      display: grid; place-items: center; flex: 0 0 43px; width: 43px; height: 43px; border-radius: 10px; color: var(--white); background: var(--navy); font: 700 13px ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+    .save {
+      border: 0; padding: 5px; color: #87919a; background: transparent; font-size: 19px; line-height: 1;
+    }
+    .save.saved { color: var(--gold); }
+    .card h3 { margin-top: 17px; font-size: 17px; letter-spacing: -.025em; }
+    .card-meta { margin-top: 5px; color: var(--muted); font-size: 11px; }
+    .tag-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 15px; }
+    .tag { padding: 4px 7px; border-radius: 99px; color: var(--green-dark); background: var(--mint); font-size: 10px; font-weight: 700; }
+    .card-description { margin-top: 13px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+    .card-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; padding-top: 16px; }
+    .source { color: var(--muted); font: 10px ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .empty { display: none; padding: 50px 20px; border: 1px solid var(--line); border-radius: 11px; background: var(--white); text-align: center; }
+    .empty.show { display: block; }
+    .empty h3 { margin-bottom: 8px; }
+    .empty p { color: var(--muted); font-size: 13px; }
+
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .step { padding-top: 18px; border-top: 1px solid var(--navy); }
+    .step-number { color: var(--green); font: 700 11px ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .step h3 { margin: 18px 0 9px; font-size: 18px; }
+    .step p { color: var(--muted); font-size: 13px; line-height: 1.6; }
+
+    .about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 65px; align-items: start; }
+    .about-copy { display: grid; gap: 16px; }
+    .about-copy p { color: var(--muted); font-size: 15px; line-height: 1.75; }
+    .principles { display: grid; gap: 11px; }
+    .principle { display: grid; grid-template-columns: 36px 1fr; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--white); }
+    .principle-mark { color: var(--green); font: 700 14px ui-monospace, SFMono-Regular, Menlo, monospace; }
+    .principle h3 { margin-bottom: 5px; font-size: 16px; }
+    .principle p { color: var(--muted); font-size: 12px; line-height: 1.55; }
+
+    .cta {
+      display: grid; justify-items: center; gap: 17px; padding: 65px 25px; border-radius: 16px; color: var(--white); background: var(--navy); text-align: center;
+    }
+    .cta h2 { max-width: 640px; font-size: clamp(31px, 4vw, 45px); }
+    .cta p { max-width: 545px; color: rgba(255,255,255,.66); font-size: 13px; }
+    .cta .btn-outline { color: var(--white); border-color: rgba(255,255,255,.35); }
+    .cta .btn-outline:hover { color: var(--navy); background: var(--white); }
+    footer { padding: 28px 0 36px; border-top: 1px solid var(--line); }
+    .footer-row { display: flex; justify-content: space-between; gap: 25px; color: var(--muted); font-size: 11px; }
+    .footer-row a { color: var(--green); text-decoration: none; }
+
+    dialog {
+      width: min(620px, calc(100% - 30px)); max-height: min(780px, calc(100vh - 30px)); padding: 0; border: 1px solid var(--line); border-radius: 15px; color: var(--ink); background: var(--paper); box-shadow: 0 28px 90px rgba(14,27,46,.25);
+    }
+    dialog::backdrop { background: rgba(14,27,46,.42); backdrop-filter: blur(3px); }
+    .dialog-inner { padding: 25px; }
+    .dialog-head { display: flex; justify-content: space-between; gap: 20px; }
+    .dialog-head h2 { margin-top: 8px; font-size: 33px; }
+    .close { border: 0; color: var(--muted); background: transparent; font-size: 26px; line-height: 1; }
+    .detail-grid { display: grid; gap: 19px; margin-top: 24px; }
+    .detail-block { display: grid; gap: 7px; }
+    .detail-block strong { font-size: 12px; }
+    .detail-block p { color: var(--muted); font-size: 13px; line-height: 1.65; }
+    .dialog-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 25px; padding-top: 18px; border-top: 1px solid var(--line); }
+    .form-dialog .dialog-inner { padding: 27px; }
+    .form-dialog h2 { margin-top: 8px; font-size: 34px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 13px; margin-top: 23px; }
+    .form-grid .wide { grid-column: 1 / -1; }
+    .form-note { margin-top: 13px; color: var(--muted); font-size: 11px; line-height: 1.55; }
+    .success { display: none; margin-top: 22px; padding: 16px; border: 1px solid #c9e4d8; border-radius: 8px; color: var(--green-dark); background: var(--mint); font-size: 13px; }
+    .success.show { display: block; }
+    .toast { position: fixed; right: 20px; bottom: 20px; z-index: 50; max-width: 310px; padding: 12px 15px; border-radius: 8px; color: var(--white); background: var(--navy); box-shadow: var(--shadow); font-size: 12px; opacity: 0; pointer-events: none; transform: translateY(8px); transition: .22s; }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+    @media (max-width: 960px) {
+      .nav-links { gap: 17px; }
+      .hero { gap: 35px; grid-template-columns: 1fr 1fr; }
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 720px) {
+      .shell { width: min(100% - 28px, 560px); }
+      .nav { min-height: 66px; }
+      .nav-actions { display: none; }
+      .menu-toggle { display: block; }
+      .nav-links { position: absolute; display: none; top: 65px; right: 14px; left: 14px; flex-direction: column; align-items: stretch; gap: 0; padding: 8px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); box-shadow: var(--shadow); }
+      .nav-links.open { display: flex; }
+      .nav-links button, .nav-links a { padding: 12px; text-align: left; }
+      .hero { display: flex; flex-direction: column; align-items: stretch; padding: 54px 0 45px; }
+      .hero-copy p { font-size: 15px; }
+      .hero-visual { min-height: 320px; }
+      .hub { width: 75px; height: 75px; font-size: 10px; }
+      .section { padding: 52px 0; }
+      .section-heading { display: grid; gap: 16px; }
+      .proof-strip, .about-grid { grid-template-columns: 1fr; }
+      .proof-item { min-height: auto; }
+      .directory-layout { grid-template-columns: 1fr; }
+      .filters { position: static; }
+      .cards, .steps { grid-template-columns: 1fr; }
+      .directory-toolbar { align-items: flex-start; flex-direction: column; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-grid .wide { grid-column: auto; }
+      .footer-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell nav">
+      <button class="brand" data-scroll="home" aria-label="BRIDGE home">
+        <svg viewBox="0 0 28 28" fill="none" aria-hidden="true">
+          <path d="M3.5 19.5C7.1 12.6 10.6 9.2 14 9.2s6.9 3.4 10.5 10.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="3.5" cy="19.5" r="2.4" fill="#0E6B52"/><circle cx="24.5" cy="19.5" r="2.4" fill="#0E6B52"/>
+        </svg>
+        <span class="brand-name">BRIDGE</span>
+      </button>
+      <nav class="nav-links" id="navLinks">
+        <button data-scroll="directory">Find organizations</button>
+        <button data-scroll="how">How it works</button>
+        <button data-scroll="about">About</button>
+      </nav>
+      <div class="nav-actions">
+        <button class="btn btn-outline btn-small" data-open-form>List your business</button>
+      </div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="shell hero" id="home">
+      <div class="hero-copy">
+        <span class="eyebrow">Public-information B2B directory</span>
+        <h1>Build your next <em class="italic">trade corridor.</em></h1>
+        <p>Explore established distributors, manufacturers, logistics companies, and trading groups using information published on their official websites.</p>
+        <div class="hero-buttons">
+          <button class="btn btn-primary" data-scroll="directory">Browse the directory <span aria-hidden="true">→</span></button>
+          <button class="btn btn-outline" data-open-form>List a business</button>
+        </div>
+        <div class="honesty-note">
+          <span aria-hidden="true">◆</span>
+          <span><strong>No invented platform metrics.</strong> BRIDGE does not display member counts, partnership totals, match percentages, verification badges, or private contact details unless a real source is available.</span>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="Illustration of a global trade network">
+        <div class="map-grid"></div>
+        <svg class="route" viewBox="0 0 500 440" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M93 126 C 157 188, 201 215, 250 215 C 303 215, 347 150, 421 122"/>
+          <path d="M103 353 C 159 287, 188 245, 250 215 C 309 182, 348 272, 406 359"/>
+          <path d="M93 126 C 173 147, 190 312, 406 359"/>
+        </svg>
+        <div class="pin pin-a">EU</div><div class="pin pin-b">AS</div><div class="pin pin-c">AF</div><div class="pin pin-d">AM</div>
+        <div class="hub">BRIDGE</div>
+        <div class="visual-caption"><span><strong>Official sources</strong>Company websites linked directly</span><span><strong>Human judgment</strong>No automated fit scores</span></div>
+      </div>
+    </section>
+
+    <section class="section shell">
+      <div class="section-heading">
+        <div><span class="eyebrow">A clearer starting point</span><h2>Useful information, <em class="italic">without the theatre.</em></h2></div>
+        <p>International expansion still needs diligence. This directory makes the first research pass easier, then points you to the organization’s own source for the details that matter.</p>
+      </div>
+      <div class="proof-strip">
+        <article class="proof-item"><div class="icon">↗</div><h3>Official links</h3><p>Each organization is linked to a public website so you can check capabilities, locations, and inquiry routes yourself.</p></article>
+        <article class="proof-item"><div class="icon">◎</div><h3>Plain descriptions</h3><p>Directory entries use broad, source-friendly descriptions instead of unsupported capacity, revenue, or partnership claims.</p></article>
+        <article class="proof-item"><div class="icon">⊕</div><h3>Your shortlist</h3><p>Save promising organizations in this browser while you compare them. Nothing is sent to BRIDGE.</p></article>
+      </div>
+    </section>
+
+    <section class="directory-wrap section" id="directory">
+      <div class="shell">
+        <div class="section-heading">
+          <div><span class="eyebrow">Explore</span><h2>Organizations worth <em class="italic">researching.</em></h2></div>
+          <p>These are public company profiles, not BRIDGE endorsements or verified memberships. Open the official source before making a commercial decision.</p>
+        </div>
+        <div class="directory-layout">
+          <aside class="filters">
+            <h3>Filter directory</h3>
+            <div class="field"><label for="search">Search</label><input id="search" type="search" placeholder="Company or category"></div>
+            <div class="field"><label for="region">Region</label><select id="region"><option value="">All regions</option><option>Asia</option><option>Europe</option><option>North America</option><option>Latin America</option><option>Africa</option></select></div>
+            <div class="field"><label for="category">Category</label><select id="category"><option value="">All categories</option><option>Distribution</option><option>Manufacturing</option><option>Logistics</option><option>Trading group</option><option>Food</option><option>Industrial supply</option></select></div>
+            <button class="reset" id="resetFilters">Reset filters</button>
+          </aside>
+          <div class="directory-main">
+            <div class="directory-toolbar"><span class="result-note" id="resultNote"></span><span class="result-note">Public sources only</span></div>
+            <div class="cards" id="cards"></div>
+            <div class="empty" id="empty"><h3>No public profile matches that search.</h3><p>Try a broader company name, region, or category.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="how">
+      <div class="section-heading"><div><span class="eyebrow">A sensible workflow</span><h2>Research first. <em class="italic">Reach out second.</em></h2></div><p>The directory is intentionally a starting point, not a shortcut around commercial diligence.</p></div>
+      <div class="steps">
+        <article class="step"><span class="step-number">01</span><h3>Define the corridor</h3><p>Clarify the product, destination market, regulatory needs, and kind of organization you need.</p></article>
+        <article class="step"><span class="step-number">02</span><h3>Shortlist publicly</h3><p>Use the filters and save organizations whose published scope appears relevant.</p></article>
+        <article class="step"><span class="step-number">03</span><h3>Check the source</h3><p>Read the official website and use its published inquiry route. Confirm every material detail independently.</p></article>
+        <article class="step"><span class="step-number">04</span><h3>Start a conversation</h3><p>Send a concise, relevant introduction through the organization’s own channel—not through a fictional BRIDGE inbox.</p></article>
+      </div>
+    </section>
+
+    <section class="section shell" id="about">
+      <div class="about-grid">
+        <div class="about-copy"><span class="eyebrow">About BRIDGE</span><h2>A directory designed to be <em class="italic">honest.</em></h2><p>BRIDGE is a lightweight research interface for cross-border B2B discovery. It does not claim to represent the companies listed, certify them, or broker an introduction.</p><p>Use the public information here to form a shortlist, then verify ownership, licensing, product fit, trade terms, and contacts with the organization directly.</p></div>
+        <div class="principles">
+          <article class="principle"><span class="principle-mark">01</span><div><h3>Source over spectacle</h3><p>Company names and descriptions are paired with an official website instead of unsupported “network” numbers.</p></div></article>
+          <article class="principle"><span class="principle-mark">02</span><div><h3>No implied endorsement</h3><p>A listing means only that the organization has a public web presence relevant to the category shown.</p></div></article>
+          <article class="principle"><span class="principle-mark">03</span><div><h3>Privacy by default</h3><p>No private email addresses, personal phone numbers, fabricated representatives, or fake messaging features are included.</p></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="shell section">
+      <div class="cta"><span class="eyebrow" style="color:#9bd0bb">For businesses</span><h2>Want your public company profile included?</h2><p>Submit a few public details. This standalone file stores the form locally and does not send or publish anything.</p><button class="btn btn-primary" data-open-form>Open local submission form <span aria-hidden="true">→</span></button></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-row"><span>© 2026 BRIDGE. A public-information research interface.</span><span><a href="#about">Read the sourcing note</a> · No affiliation is implied.</span></div>
+  </footer>
+
+  <dialog id="detailDialog"><div class="dialog-inner"><div class="dialog-head"><div><span class="eyebrow" id="detailCategory"></span><h2 id="detailName"></h2><p class="muted" id="detailMeta" style="margin-top:8px;font-size:13px"></p></div><button class="close" data-close-dialog aria-label="Close">×</button></div><div class="detail-grid"><div class="detail-block"><strong>Public description</strong><p id="detailDescription"></p></div><div class="detail-block"><strong>Source</strong><p>Details should be confirmed on the organization’s official website. BRIDGE does not verify or endorse this listing.</p></div></div><div class="dialog-actions"><a class="btn btn-primary" id="detailLink" href="#" target="_blank" rel="noopener noreferrer">Open official website ↗</a><button class="btn btn-outline" id="detailSave">Save to shortlist</button></div></div></dialog>
+
+  <dialog id="formDialog" class="form-dialog"><div class="dialog-inner"><div class="dialog-head"><div><span class="eyebrow">Local only</span><h2>List a business.</h2></div><button class="close" data-close-dialog aria-label="Close">×</button></div><p class="muted" style="margin-top:12px;font-size:13px;line-height:1.6">This is a standalone HTML file. Your submission is saved in this browser only; it is not sent, reviewed, or published.</p><form id="listingForm"><div class="form-grid"><div class="field"><label for="businessName">Business name</label><input id="businessName" required></div><div class="field"><label for="businessSite">Official website</label><input id="businessSite" type="url" placeholder="https://example.com" required></div><div class="field"><label for="businessRegion">Primary region</label><select id="businessRegion" required><option value="">Select one</option><option>Asia</option><option>Europe</option><option>North America</option><option>Latin America</option><option>Africa</option></select></div><div class="field"><label for="businessCategory">Category</label><select id="businessCategory" required><option value="">Select one</option><option>Distribution</option><option>Manufacturing</option><option>Logistics</option><option>Trading group</option><option>Food</option><option>Industrial supply</option></select></div><div class="field wide"><label for="businessDescription">Public description</label><textarea id="businessDescription" rows="4" placeholder="Use information published on the official website." required></textarea></div></div><p class="form-note">By submitting, you are only saving this draft locally. No network request is made.</p><div class="dialog-actions"><button class="btn btn-primary" type="submit">Save local draft</button><button class="btn btn-outline" type="button" data-close-dialog>Cancel</button></div></form><div class="success" id="formSuccess"></div></div></dialog>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    const organizations = [
+      { id: "dksh", name: "DKSH", monogram: "DK", region: "Asia", category: "Distribution", meta: "Market expansion services · Asia", description: "A market expansion services company with public information covering consumer goods, healthcare, performance materials, and technology.", url: "https://www.dksh.com/" },
+      { id: "brenntag", name: "Brenntag", monogram: "BR", region: "Europe", category: "Distribution", meta: "Chemicals and ingredients · Germany", description: "A global distributor of chemicals and ingredients serving industrial and life-science markets.", url: "https://www.brenntag.com/" },
+      { id: "mitsui", name: "Mitsui & Co.", monogram: "MC", region: "Asia", category: "Trading group", meta: "Trading and investment · Japan", description: "A Japanese general trading company with public business areas spanning products, infrastructure, mobility, energy, and more.", url: "https://www.mitsui.com/" },
+      { id: "flex", name: "Flex", monogram: "FX", region: "North America", category: "Manufacturing", meta: "Design and manufacturing · United States", description: "A manufacturing partner offering design, engineering, manufacturing, and supply-chain services for multiple industries.", url: "https://flex.com/" },
+      { id: "bunzl", name: "Bunzl", monogram: "BZ", region: "Europe", category: "Distribution", meta: "International distribution · United Kingdom", description: "An international distribution and services group supplying a range of non-food products to business customers.", url: "https://www.bunzl.com/" },
+      { id: "cj-logistics", name: "CJ Logistics", monogram: "CJ", region: "Asia", category: "Logistics", meta: "Contract logistics and freight · South Korea", description: "A logistics company with public services covering contract logistics, freight forwarding, parcel delivery, and supply-chain solutions.", url: "https://www.cjlogistics.com/" },
+      { id: "wurth", name: "Würth Group", monogram: "WG", region: "Europe", category: "Industrial supply", meta: "Assembly and fastening materials · Germany", description: "A group focused on assembly and fastening materials, tools, inventory systems, and related services for professional customers.", url: "https://www.wuerth.com/" },
+      { id: "marubeni", name: "Marubeni", monogram: "MB", region: "Asia", category: "Trading group", meta: "Trading and business investment · Japan", description: "A Japanese trading and business investment company with public activities across food, agri-business, energy, finance, and infrastructure.", url: "https://www.marubeni.com/" },
+      { id: "jebsen-jessen", name: "Jebsen & Jessen", monogram: "JJ", region: "Asia", category: "Trading group", meta: "Industrial and consumer businesses · Southeast Asia", description: "A diversified group with public business areas including manufacturing, engineering, consumer products, and industrial services.", url: "https://www.jjsea.com/" },
+      { id: "grupo-bimbo", name: "Grupo Bimbo", monogram: "GB", region: "Latin America", category: "Food", meta: "Bakery and food products · Mexico", description: "A food company whose public site describes bakery products, brands, sustainability, and operations in markets around the world.", url: "https://www.grupobimbo.com/" },
+      { id: "sysco", name: "Sysco", monogram: "SY", region: "North America", category: "Distribution", meta: "Foodservice distribution · United States", description: "A foodservice distributor serving restaurants, healthcare, education, hospitality, and other food-away-from-home customers.", url: "https://www.sysco.com/" },
+      { id: "haw-par", name: "Haw Par Corporation", monogram: "HP", region: "Asia", category: "Manufacturing", meta: "Healthcare and consumer products · Singapore", description: "A Singapore-listed company known publicly for healthcare products and consumer brands, alongside property and investment activities.", url: "https://www.hawpar.com.sg/" }
+    ];
+
+    const cards = document.getElementById("cards");
+    const empty = document.getElementById("empty");
+    const resultNote = document.getElementById("resultNote");
+    const search = document.getElementById("search");
+    const region = document.getElementById("region");
+    const category = document.getElementById("category");
+    const detailDialog = document.getElementById("detailDialog");
+    const formDialog = document.getElementById("formDialog");
+    let saved = JSON.parse(localStorage.getItem("bridge-shortlist") || "[]");
+    let selectedOrganization = null;
+
+    function safeText(value) {
+      return String(value).replace(/[&<>"']/g, char => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#039;" })[char]);
+    }
+    function render() {
+      const query = search.value.trim().toLowerCase();
+      const regionValue = region.value;
+      const categoryValue = category.value;
+      const filtered = organizations.filter(org => {
+        const searchable = `${org.name} ${org.meta} ${org.description}`.toLowerCase();
+        return (!query || searchable.includes(query)) && (!regionValue || org.region === regionValue) && (!categoryValue || org.category === categoryValue);
+      });
+      resultNote.textContent = `${filtered.length} public profiles shown`;
+      cards.innerHTML = filtered.map(org => `
+        <article class="card">
+          <div class="card-top"><div class="monogram">${safeText(org.monogram)}</div><button class="save ${saved.includes(org.id) ? "saved" : ""}" data-save="${safeText(org.id)}" aria-label="${saved.includes(org.id) ? "Remove from" : "Save to"} shortlist">${saved.includes(org.id) ? "★" : "☆"}</button></div>
+          <h3>${safeText(org.name)}</h3>
+          <p class="card-meta">${safeText(org.meta)}</p>
+          <div class="tag-row"><span class="tag">${safeText(org.category)}</span><span class="tag">${safeText(org.region)}</span></div>
+          <p class="card-description">${safeText(org.description)}</p>
+          <div class="card-bottom"><span class="source">Official source</span><button class="btn btn-dark btn-small" data-detail="${safeText(org.id)}">View profile →</button></div>
+        </article>
+      `).join("");
+      empty.classList.toggle("show", filtered.length === 0);
+    }
+    function notify(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("show");
+      clearTimeout(window.bridgeToast);
+      window.bridgeToast = setTimeout(() => toast.classList.remove("show"), 2600);
+    }
+    function toggleSaved(id) {
+      saved = saved.includes(id) ? saved.filter(item => item !== id) : [...saved, id];
+      localStorage.setItem("bridge-shortlist", JSON.stringify(saved));
+      render();
+      notify(saved.includes(id) ? "Saved to your local shortlist." : "Removed from your local shortlist.");
+    }
+    function openDetail(id) {
+      const org = organizations.find(item => item.id === id);
+      if (!org) return;
+      selectedOrganization = org;
+      document.getElementById("detailCategory").textContent = org.category;
+      document.getElementById("detailName").textContent = org.name;
+      document.getElementById("detailMeta").textContent = org.meta;
+      document.getElementById("detailDescription").textContent = org.description;
+      const link = document.getElementById("detailLink");
+      link.href = org.url;
+      document.getElementById("detailSave").textContent = saved.includes(org.id) ? "Remove from shortlist" : "Save to shortlist";
+      detailDialog.showModal();
+    }
+    function openForm() {
+      document.getElementById("formSuccess").classList.remove("show");
+      document.getElementById("listingForm").style.display = "block";
+      formDialog.showModal();
+    }
+
+    document.addEventListener("click", event => {
+      const scrollTarget = event.target.closest("[data-scroll]");
+      if (scrollTarget) {
+        document.getElementById(scrollTarget.dataset.scroll)?.scrollIntoView({ behavior: "smooth" });
+        document.getElementById("navLinks").classList.remove("open");
+        document.getElementById("menuToggle").setAttribute("aria-expanded", "false");
+      }
+      const detailTarget = event.target.closest("[data-detail]");
+      if (detailTarget) openDetail(detailTarget.dataset.detail);
+      const saveTarget = event.target.closest("[data-save]");
+      if (saveTarget) toggleSaved(saveTarget.dataset.save);
+      if (event.target.closest("[data-open-form]")) openForm();
+      if (event.target.matches("[data-close-dialog]") || event.target.closest("[data-close-dialog]")) event.target.closest("dialog")?.close();
+    });
+    [search, region, category].forEach(input => input.addEventListener("input", render));
+    document.getElementById("resetFilters").addEventListener("click", () => { search.value = ""; region.value = ""; category.value = ""; render(); });
+    document.getElementById("detailSave").addEventListener("click", () => { if (selectedOrganization) { toggleSaved(selectedOrganization.id); document.getElementById("detailSave").textContent = saved.includes(selectedOrganization.id) ? "Remove from shortlist" : "Save to shortlist"; } });
+    document.getElementById("menuToggle").addEventListener("click", () => {
+      const links = document.getElementById("navLinks");
+      const open = links.classList.toggle("open");
+      document.getElementById("menuToggle").setAttribute("aria-expanded", String(open));
+    });
+    document.getElementById("listingForm").addEventListener("submit", event => {
+      event.preventDefault();
+      const draft = { name: document.getElementById("businessName").value, site: document.getElementById("businessSite").value, savedAt: new Date().toISOString() };
+      localStorage.setItem("bridge-listing-draft", JSON.stringify(draft));
+      document.getElementById("listingForm").style.display = "none";
+      const success = document.getElementById("formSuccess");
+      success.textContent = "Saved in this browser only. Nothing was sent or published.";
+      success.classList.add("show");
+    });
+    render();
+  </script>
+</body>
+</html>
